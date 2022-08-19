@@ -4,9 +4,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Random Screen Color | Caksa Wintang</title>
-
 	<style>
-		html, body {
+		html, body, #container {
 			width: 100vw;
 			height: 100vh;
 			margin: 0;
@@ -14,19 +13,21 @@
 		}
 	</style>
 </head>
-<body id="bgColor">
-	<table>
-		<tr>
-			<td>HEX</td>
-			<td>:</td>
-			<td id="hexCode"></td>
-		</tr>
-		<tr>
-			<td>RGBA</td>
-			<td>:</td>
-			<td id="rgbaCode"></td>
-		</tr>
-	</table>
+<body>
+	<div id="container" ondblclick="setFullScreen()">
+		<table>
+			<tr>
+				<td>HEX</td>
+				<td>:</td>
+				<td id="hexCode"></td>
+			</tr>
+			<tr>
+				<td>RGBA</td>
+				<td>:</td>
+				<td id="rgbaCode"></td>
+			</tr>
+		</table>
+	</div>
 </body>
 
 <script>
@@ -41,7 +42,7 @@
 			newColor += y;
 		}
 
-		document.getElementById('bgColor').style.backgroundColor = newColor;
+		document.getElementById('container').style.backgroundColor = newColor;
 		document.getElementById('hexCode').innerHTML = newColor;
 
 		hexToRGBA(newColor);
@@ -56,6 +57,11 @@
 		var newColor = 'rgba(' + r + ', ' + g + ', ' + b + ', 1)';
 
 		document.getElementById('rgbaCode').innerHTML = newColor;
+	}
+
+	function setFullScreen() {
+		var element = document.getElementById('container');
+		element.requestFullscreen()
 	}
 
 	// Change color every 2 seconds
