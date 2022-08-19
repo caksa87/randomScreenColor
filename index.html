@@ -10,12 +10,19 @@
 			height: 100vh;
 			margin: 0;
 			overflow: hidden;
+			font-size: 14px;
 		}
 	</style>
 </head>
 <body>
-	<div id="container" ondblclick="setFullScreen()">
-		<table>
+	<div id="container" ondblclick="toggleFullScreen()">
+		<div style="display: flex; margin-bottom: 1rem;">
+			<div style="display: flex; align-items: center;">
+				<input id="cbShowColorCode" type="checkbox" onchange="toggleColorCode()">
+				<label for="cbShowColorCode">Show color code</label>
+			</div>
+		</div>
+		<table id="colorCode">
 			<tr>
 				<td>HEX</td>
 				<td>:</td>
@@ -31,6 +38,8 @@
 </body>
 
 <script>
+	var showColorCode = false;
+
 	// Generate random hex
 	function generate() {
 		const hexValues = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
@@ -59,13 +68,25 @@
 		document.getElementById('rgbaCode').innerHTML = newColor;
 	}
 
-	function setFullScreen() {
+	// Enter / exit fullscreen
+	function toggleFullScreen() {
 		const element = document.getElementById('container');
 		const isFullScreen = document.fullscreenElement;
 		if (isFullScreen) {
 			document.exitFullscreen()
 		} else {
 			element.requestFullscreen()
+		}
+	}
+
+	// Toggle color code
+	function toggleColorCode() {
+		showColorCode = !showColorCode
+		const element = document.getElementById('colorCode');
+		if (element.style.display === 'none') {
+			element.style.display = 'block';
+		} else {
+			element.style.display = 'none'
 		}
 	}
 
