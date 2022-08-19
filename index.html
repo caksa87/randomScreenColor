@@ -6,28 +6,31 @@
 	<title>Random Screen Color | Caksa Wintang</title>
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap');
-		html, body, #container {
-			width: 100vw;
-			height: 100vh;
+		html, body {
 			margin: 0;
 			overflow: hidden;
 			font-family: 'Raleway', sans-serif;
 			font-size: 14px;
 		}
-		.option-row {
+		#container {
+			width: 100vw;
+			height: 100vh;
+			padding: 1rem;
+		}
+		#optionRow {
 			display: flex;
 			margin-bottom: 1rem;
 		}
-		.option-row .option {
+		#optionRow .option {
 			display: flex;
 			align-items: center;
 		}
-		.option-row .option:not(:first-child) { margin-left: 1rem; }
+		#optionRow .option:not(:first-child) { margin-left: 1rem; }
 	</style>
 </head>
 <body>
-	<div id="container" style="padding: 0 1rem;" ondblclick="toggleFullScreen()">
-		<div class="option-row">
+	<div id="container" ondblclick="toggleFullScreen()">
+		<div id="optionRow">
 			<div class="option">
 				<input id="cbToggleColorCode" type="checkbox" onchange="toggleColorCode()">
 				<label for="cbToggleColorCode">Show color code</label>
@@ -40,6 +43,9 @@
 				<input id="cbToggleClock" type="checkbox" onchange="toggleClock()">
 				<label for="cbToggleClock">Show clock</label>
 			</div>
+			<button class="option" onclick="toggleFullScreen()">
+				Toggle fullscreen
+			</button>
 		</div>
 		<table id="colorCode" style="display: none;">
 			<tr>
@@ -131,6 +137,17 @@
 		}
 	}
 
+	// Toggle menu
+	function showMenu() {
+		document.getElementById('optionRow').style.display = 'flex';
+		document.getElementById('container').style.cursor = 'auto';
+		setTimeout(function() {
+			document.getElementById('optionRow').style.display = 'none';
+			document.getElementById('container').style.cursor = 'none';
+		}, 5000);
+	}
+	showMenu();
+
 	// Toggle color code
 	function toggleColorCode() {
 		const element = document.getElementById('colorCode');
@@ -165,5 +182,10 @@
 	window.setInterval(function() {
 		generate();
 	}, 2000);
+
+	// Detect mouse move
+	document.getElementById('container').onmousemove = function() {
+		showMenu();
+	};
 </script>
 </html>
