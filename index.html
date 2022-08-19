@@ -12,17 +12,30 @@
 			overflow: hidden;
 			font-size: 14px;
 		}
+		.option-row {
+			display: flex;
+			margin-bottom: 1rem;
+		}
+		.option-row .option {
+			display: flex;
+			align-items: center;
+		}
+		.option-row .option:not(:first-child) { margin-left: 1rem; }
 	</style>
 </head>
 <body>
 	<div id="container" ondblclick="toggleFullScreen()">
-		<div style="display: flex; margin-bottom: 1rem;">
-			<div style="display: flex; align-items: center;">
+		<div class="option-row">
+			<div class="option">
 				<input id="cbShowColorCode" type="checkbox" onchange="toggleColorCode()">
 				<label for="cbShowColorCode">Show color code</label>
 			</div>
+			<div class="option">
+				<input id="cbShowClock" type="checkbox" onchange="toggleClock()">
+				<label for="cbShowClock">Show clock</label>
+			</div>
 		</div>
-		<table id="colorCode">
+		<table id="colorCode" style="display: none;">
 			<tr>
 				<td>HEX</td>
 				<td>:</td>
@@ -34,12 +47,11 @@
 				<td id="rgbaCode"></td>
 			</tr>
 		</table>
+		<div id="clock" style="display: none;"></div>
 	</div>
 </body>
 
 <script>
-	var showColorCode = false;
-
 	// Generate random hex
 	function generate() {
 		const hexValues = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
@@ -63,10 +75,28 @@
 		const g = parseInt(hex.slice(3, 5), 16);
 		const b = parseInt(hex.slice(5, 7), 16);
 
-		const newColor = 'rgba(' + r + ', ' + g + ', ' + b + ', 1)';
+		const newColor = `rgba(${r}, ${g}, ${b}, 1)`;
 
 		document.getElementById('rgbaCode').innerHTML = newColor;
 	}
+
+	function showTime(){
+		const date = new Date();
+		let h = date.getHours(); // 0 - 23
+		let m = date.getMinutes(); // 0 - 59
+		let s = date.getSeconds(); // 0 - 59
+
+		h = (h < 10) ? '0' + h : h;
+		m = (m < 10) ? '0' + m : m;
+		s = (s < 10) ? '0' + s : s;
+
+		const time = h + ':' + m + ':' + s;
+		document.getElementById('clock').innerText = time;
+		document.getElementById('clock').textContent = time;
+
+		setTimeout(showTime, 1000);
+	}
+	showTime();
 
 	// Enter / exit fullscreen
 	function toggleFullScreen() {
@@ -81,8 +111,17 @@
 
 	// Toggle color code
 	function toggleColorCode() {
-		showColorCode = !showColorCode
 		const element = document.getElementById('colorCode');
+		if (element.style.display === 'none') {
+			element.style.display = 'block';
+		} else {
+			element.style.display = 'none'
+		}
+	}
+
+	// Toggle clock
+	function toggleClock() {
+		const element = document.getElementById('clock');
 		if (element.style.display === 'none') {
 			element.style.display = 'block';
 		} else {
