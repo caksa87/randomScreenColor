@@ -27,12 +27,16 @@
 	<div id="container" ondblclick="toggleFullScreen()">
 		<div class="option-row">
 			<div class="option">
-				<input id="cbShowColorCode" type="checkbox" onchange="toggleColorCode()">
-				<label for="cbShowColorCode">Show color code</label>
+				<input id="cbToggleColorCode" type="checkbox" onchange="toggleColorCode()">
+				<label for="cbToggleColorCode">Show color code</label>
 			</div>
 			<div class="option">
-				<input id="cbShowClock" type="checkbox" onchange="toggleClock()">
-				<label for="cbShowClock">Show clock</label>
+				<input id="cbToggleDate" type="checkbox" onchange="toggleDate()">
+				<label for="cbToggleDate">Show date</label>
+			</div>
+			<div class="option">
+				<input id="cbToggleClock" type="checkbox" onchange="toggleClock()">
+				<label for="cbToggleClock">Show clock</label>
 			</div>
 		</div>
 		<table id="colorCode" style="display: none;">
@@ -48,6 +52,7 @@
 			</tr>
 		</table>
 		<div id="clock" style="display: none;"></div>
+		<div id="date" style="display: none;"></div>
 	</div>
 </body>
 
@@ -80,7 +85,8 @@
 		document.getElementById('rgbaCode').innerHTML = newColor;
 	}
 
-	function showTime(){
+	// Generate datetime
+	function generateDateTime(){
 		const date = new Date();
 		let h = date.getHours(); // 0 - 23
 		let m = date.getMinutes(); // 0 - 59
@@ -90,13 +96,22 @@
 		m = (m < 10) ? '0' + m : m;
 		s = (s < 10) ? '0' + s : s;
 
+		const formatedDate = date.toLocaleDateString("en-US", {
+			weekday: 'long',
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric'
+		});
 		const time = h + ':' + m + ':' + s;
+
+		document.getElementById('date').innerText = formatedDate;
+		document.getElementById('date').textContent = formatedDate;
 		document.getElementById('clock').innerText = time;
 		document.getElementById('clock').textContent = time;
 
-		setTimeout(showTime, 1000);
+		setTimeout(generateDateTime, 1000);
 	}
-	showTime();
+	generateDateTime();
 
 	// Enter / exit fullscreen
 	function toggleFullScreen() {
@@ -112,6 +127,16 @@
 	// Toggle color code
 	function toggleColorCode() {
 		const element = document.getElementById('colorCode');
+		if (element.style.display === 'none') {
+			element.style.display = 'block';
+		} else {
+			element.style.display = 'none'
+		}
+	}
+
+	// Toggle date
+	function toggleDate() {
+		const element = document.getElementById('date');
 		if (element.style.display === 'none') {
 			element.style.display = 'block';
 		} else {
